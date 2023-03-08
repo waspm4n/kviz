@@ -37,6 +37,8 @@ const QUIZ = [
 ];
 let currScore = 0;
 let currQuestion = 0;
+let btnSubmit = document.querySelector("#btn-submit");
+
 function initializeQuiz() {
   const questionContainer = document.querySelector("#pitanje");
   const answersContainer = document.querySelector("#odgovori");
@@ -45,8 +47,8 @@ function initializeQuiz() {
   questionContainer.textContent = QUIZ[currQuestion].question;
   QUIZ[currQuestion].answers.forEach((answer) => {
     const button = document.createElement("button");
-      button.textContent = answer;
-      button.classList.add("btn");
+    button.textContent = answer;
+    button.classList.add("btn");
     answersContainer.appendChild(button);
     button.addEventListener("click", () => {
       if (answer === QUIZ[currQuestion].correct_answer) {
@@ -56,9 +58,9 @@ function initializeQuiz() {
       if (currQuestion < QUIZ.length) {
         initializeQuiz();
       } else {
-          questionContainer.style.display = "none";
-          answersContainer.style.display = "none"
-          document.querySelector("#naziv").style.display = "none";
+        questionContainer.style.display = "none";
+        answersContainer.style.display = "none";
+        document.querySelector("#naziv").style.display = "none";
         displayResults();
       }
     });
@@ -69,8 +71,16 @@ function displayResults() {
   const quizContainer = document.querySelector("#main");
   const resultContainer = document.querySelector("#result-container");
   const scoreContainer = document.querySelector("#score");
-    resultContainer.style.display = "block";
-    scoreContainer.textContent = `Congrats! Your total score is ${currScore} points!`;
+  resultContainer.classList.add("rezultat");
+  resultContainer.style.display = "";
+  const nameInput = document.querySelector("#name"); // selektujemo inpute
+  const lastNameInput = document.querySelector("#lastName");
+  scoreContainer.textContent = `Congrats! ${nameInput.value} ${lastNameInput.value} Your total score is ${currScore} points!`;
+  scoreContainer.classList.add("score-container");
 }
-
-initializeQuiz();
+btnSubmit.addEventListener("click", (event) => {
+  event.preventDefault(); // sprecava restetovanje
+  const formContainer = document.querySelector("#form");
+  formContainer.style.display = "none"; 
+  initializeQuiz(); // load kviz
+});
